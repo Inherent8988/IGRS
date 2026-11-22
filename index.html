@@ -6,36 +6,35 @@
 <meta name="theme-color" content="#080808">
 <title>IGRS — Inherent Game Rating System</title>
 <style>
-:root{color-scheme:dark;--bg:#080808;--panel:#121212;--line:#292929;--muted:#a4a4a4;--white:#f5f5f5;--accent:#b7ff00}
+:root{--bg:#080808;--panel:#121212;--line:#292929;--muted:#a4a4a4;--white:#f5f5f5;--accent:#b7ff00}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
-header{padding:25px clamp(18px,5vw,64px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
-.brand{font-size:30px;font-weight:900;letter-spacing:2px}
-.brand span{color:var(--accent)}
-.tag{color:var(--muted);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
-main{width:min(850px,calc(100% - 32px));margin:42px auto 70px}
-.intro{margin-bottom:28px}
+header{padding:24px clamp(18px,5vw,64px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-size:30px;font-weight:900;letter-spacing:2px}.brand span{color:var(--accent)}
+.tag{color:var(--muted);font-size:11px;letter-spacing:1.3px;text-transform:uppercase;text-align:right}
+main{width:min(900px,calc(100% - 32px));margin:40px auto 70px}
 h1{font-size:clamp(27px,5vw,42px);margin:0 0 10px}
 p{color:var(--muted);line-height:1.55}
 .notice{border:1px solid #49421d;background:#17150b;color:#e9d98d;padding:13px 15px;border-radius:10px;font-size:13px;line-height:1.5;margin:20px 0 25px}
 form,.result{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,30px)}
-.question{padding:17px 0;border-bottom:1px solid var(--line)}
-.question:last-of-type{border:0}
+.section-title{font-size:18px;margin:25px 0 4px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.section-title:first-child{margin-top:0}
+.grid{display:grid;grid-template-columns:1fr;gap:0 22px}
+.question{padding:16px 0;border-bottom:1px solid var(--line)}
 label{display:block;font-weight:700;margin-bottom:10px}
 select,input{width:100%;background:#090909;color:var(--white);border:1px solid #3b3b3b;border-radius:9px;padding:13px;font-size:15px}
 select:focus,input:focus{outline:2px solid var(--accent);outline-offset:2px}
 .hint{font-size:12px;color:var(--muted);margin:8px 0 0}
 button{border:0;border-radius:10px;padding:14px 20px;font-weight:800;font-size:15px;cursor:pointer}
-.primary{width:100%;background:var(--accent);color:#080808;margin-top:22px}
+.primary{width:100%;background:var(--accent);color:#080808;margin-top:24px}
 .primary:hover{filter:brightness(.93)}
-.result{margin-top:24px;text-align:center;display:none}
-.result.show{display:block}
+.result{margin-top:24px;text-align:center;display:none}.result.show{display:block}
 .result h2{margin:0 0 8px}
 .result img{display:block;width:min(320px,80%);max-height:430px;object-fit:contain;margin:22px auto;background:#fff;border-radius:3px}
 .download{display:inline-block;background:#f2f2f2;color:#111;text-decoration:none;padding:12px 18px;border-radius:9px;font-weight:800;margin:4px}
 .small{font-size:12px;color:var(--muted)}
 footer{text-align:center;color:#666;font-size:12px;padding:0 20px 30px}
-@media(min-width:700px){.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -44,16 +43,53 @@ footer{text-align:center;color:#666;font-size:12px;padding:0 20px 30px}
   <div class="tag">Inherent Game Rating System</div>
 </header>
 <main>
-  <section class="intro">
-    <h1>Оценка видеоигры</h1>
-    <p>Ответь на вопросы о содержании игры. Система предложит предварительную возрастную категорию IGRS.</p>
-  </section>
-  <div class="notice">Важно: IGRS — независимая концепция классификации. Результат анкеты является предварительной рекомендацией, а не официальным или государственным возрастным рейтингом.</div>
+  <h1>Оценка видеоигры</h1>
+  <p>Заполни анкету о жанре, игровых механиках и содержании игры. IGRS предложит предварительную возрастную категорию.</p>
+  <div class="notice">IGRS — независимая система предварительной классификации. Результат анкеты не является официальным или государственным возрастным рейтингом. Для точной оценки игру необходимо проверять целиком.</div>
+
   <form id="ratingForm">
+    <h2 class="section-title">Информация об игре</h2>
     <div class="grid">
       <div class="question">
-        <label for="violence">1. Насколько часто встречается насилие?</label>
-        <select id="violence" required>
+        <label for="gameName">Название игры</label>
+        <input id="gameName" type="text" maxlength="80" placeholder="Например, THE BLACKOUT">
+      </div>
+      <div class="question">
+        <label for="genre">1. Какой жанр игры?</label>
+        <select id="genre">
+          <option value="0">Головоломка / обучающая</option>
+          <option value="0">Симулятор / песочница</option>
+          <option value="0">Приключение</option>
+          <option value="0">Платформер</option>
+          <option value="0">Спорт / гонки</option>
+          <option value="0">Стратегия</option>
+          <option value="0">RPG</option>
+          <option value="0">Экшен</option>
+          <option value="0">Шутер</option>
+          <option value="0">Хоррор</option>
+          <option value="0">Другое</option>
+        </select>
+        <p class="hint">Жанр сам по себе не определяет возрастной рейтинг — учитывается содержимое игры.</p>
+      </div>
+      <div class="question">
+        <label for="perspective">2. Какой тип игрового мира?</label>
+        <select id="perspective">
+          <option>2D</option><option>3D</option><option>2.5D</option><option>Текстовая / визуальная новелла</option><option>Другое</option>
+        </select>
+      </div>
+      <div class="question">
+        <label for="mode">3. Какой режим игры?</label>
+        <select id="mode">
+          <option>Одиночная игра</option><option>Мультиплеер</option><option>Одиночная и мультиплеер</option>
+        </select>
+      </div>
+    </div>
+
+    <h2 class="section-title">Содержание игры</h2>
+    <div class="grid">
+      <div class="question">
+        <label for="violence">4. Насколько часто встречается насилие?</label>
+        <select id="violence">
           <option value="0">Не встречается</option>
           <option value="1">Редкое, условное или мультяшное</option>
           <option value="2">Умеренное или реалистичное</option>
@@ -61,8 +97,8 @@ footer{text-align:center;color:#666;font-size:12px;padding:0 20px 30px}
         </select>
       </div>
       <div class="question">
-        <label for="fear">2. Насколько страшная атмосфера?</label>
-        <select id="fear" required>
+        <label for="fear">5. Насколько страшная атмосфера?</label>
+        <select id="fear">
           <option value="0">Не страшная</option>
           <option value="1">Немного пугающая</option>
           <option value="2">Заметно пугающая / напряжённая</option>
@@ -70,8 +106,8 @@ footer{text-align:center;color:#666;font-size:12px;padding:0 20px 30px}
         </select>
       </div>
       <div class="question">
-        <label for="language">3. Какая ненормативная лексика?</label>
-        <select id="language" required>
+        <label for="language">6. Какая ненормативная лексика?</label>
+        <select id="language">
           <option value="0">Отсутствует</option>
           <option value="1">Редкие мягкие выражения</option>
           <option value="2">Регулярная грубая лексика</option>
@@ -79,28 +115,61 @@ footer{text-align:center;color:#666;font-size:12px;padding:0 20px 30px}
         </select>
       </div>
       <div class="question">
-        <label for="substances">4. Есть ли темы алкоголя или наркотиков?</label>
-        <select id="substances" required>
+        <label for="substances">7. Есть ли алкоголь или наркотики?</label>
+        <select id="substances">
           <option value="0">Нет</option>
           <option value="1">Только упоминания</option>
           <option value="2">Заметное изображение или употребление</option>
         </select>
       </div>
       <div class="question">
-        <label for="themes">5. Насколько серьёзные взрослые темы?</label>
-        <select id="themes" required>
+        <label for="themes">8. Есть ли тяжёлые психологические темы?</label>
+        <select id="themes">
           <option value="0">Нет / минимальные</option>
           <option value="1">Есть отдельные серьёзные темы</option>
           <option value="2">Много тяжёлых психологических тем</option>
         </select>
       </div>
       <div class="question">
-        <label for="online">6. Есть ли взаимодействие с другими игроками?</label>
-        <select id="online" required>
-          <option value="0">Нет, одиночная игра</option>
-          <option value="1">Да, онлайн-режим или чат</option>
+        <label for="sexual">9. Есть ли сексуальные темы или откровенная одежда?</label>
+        <select id="sexual">
+          <option value="0">Нет</option>
+          <option value="1">Редкие намёки / неоткровенная романтика</option>
+          <option value="2">Заметные сексуальные темы или откровенная подача</option>
         </select>
-        <p class="hint">Онлайн-взаимодействие само по себе не повышает возрастную категорию, но требует отдельного внимания родителей.</p>
+      </div>
+      <div class="question">
+        <label for="gambling">10. Есть ли азартные механики?</label>
+        <select id="gambling">
+          <option value="0">Нет</option>
+          <option value="1">Вымышленные игровые автоматы / ставки без реальных денег</option>
+          <option value="2">Ставки или случайные платные награды</option>
+        </select>
+      </div>
+      <div class="question">
+        <label for="online">11. Есть ли онлайн-общение?</label>
+        <select id="online">
+          <option value="0">Нет</option>
+          <option value="1">Голосовой или текстовый чат</option>
+          <option value="2">Общение и пользовательский контент</option>
+        </select>
+        <p class="hint">Онлайн-общение само по себе не повышает рейтинг, но важно для отдельного предупреждения.</p>
+      </div>
+      <div class="question">
+        <label for="purchases">12. Есть ли покупки внутри игры?</label>
+        <select id="purchases">
+          <option value="0">Нет</option>
+          <option value="1">Косметические предметы / дополнения</option>
+          <option value="2">Случайные платные предметы или лутбоксы</option>
+        </select>
+      </div>
+      <div class="question">
+        <label for="discrimination">13. Есть ли дискриминация или травля?</label>
+        <select id="discrimination">
+          <option value="0">Нет</option>
+          <option value="1">Редкие упоминания или сюжетный контекст</option>
+          <option value="2">Частое или одобряемое игрой изображение</option>
+        </select>
       </div>
     </div>
     <button class="primary" type="submit">ОПРЕДЕЛИТЬ РЕЙТИНГ</button>
@@ -115,39 +184,53 @@ footer{text-align:center;color:#666;font-size:12px;padding:0 20px 30px}
   </section>
 </main>
 <footer>IGRS™ · Inherent Game Rating System · Независимая предварительная классификация</footer>
+
 <script>
 const levels = {
-  3:  {file:"IGRS 3.png",  desc:"Подходит для самой широкой аудитории. В анкете не отмечено значимого контента."},
-  7:  {file:"IGRS 7.png",  desc:"Может содержать немного условного насилия или слегка пугающие моменты."},
-  12: {file:"IGRS 12.png", desc:"Может содержать умеренное насилие, заметно пугающие сцены или грубоватую лексику."},
-  16: {file:"IGRS 16.png", desc:"Может содержать частое интенсивное насилие, сильный хоррор или регулярную грубую лексику."},
-  18: {file:"IGRS 18.png", desc:"В анкете отмечено сочетание наиболее интенсивных или взрослых тем."}
+  3:{file:"IGRS 3.png",desc:"В анкете не отмечено значимого контента."},
+  7:{file:"IGRS 7.png",desc:"Возможны отдельные мягкие или слегка пугающие элементы."},
+  12:{file:"IGRS 12.png",desc:"Возможны умеренное насилие, пугающие сцены или отдельные взрослые темы."},
+  16:{file:"IGRS 16.png",desc:"Отмечены интенсивное содержание или несколько заметных взрослых тем."},
+  18:{file:"IGRS 18.png",desc:"Отмечено сочетание наиболее интенсивных или взрослых тем."}
 };
 
 document.getElementById("ratingForm").addEventListener("submit", function(event){
   event.preventDefault();
   const v = id => Number(document.getElementById(id).value);
   const violence=v("violence"), fear=v("fear"), language=v("language");
-  const substances=v("substances"), themes=v("themes");
+  const substances=v("substances"), themes=v("themes"), sexual=v("sexual");
+  const gambling=v("gambling"), discrimination=v("discrimination");
   let rating=3;
 
-  // Transparent starter heuristic. It should be reviewed and refined before public use.
-  if (violence>=1 || fear>=1) rating=Math.max(rating,7);
-  if (violence>=2 || fear>=2 || language>=1 || substances>=1 || themes>=1) rating=Math.max(rating,12);
-  if (violence>=3 || fear>=3 || language>=2 || substances>=2 || themes>=2) rating=Math.max(rating,16);
-  if ((violence>=3 && fear>=3) || (violence>=3 && themes>=2) ||
-      (fear>=3 && themes>=2) || (language>=3 && (violence>=2 || fear>=2))) rating=18;
+  if(violence>=1 || fear>=1 || discrimination>=1) rating=Math.max(rating,7);
+  if(violence>=2 || fear>=2 || language>=1 || substances>=1 ||
+     themes>=1 || sexual>=1 || gambling>=1 || discrimination>=2)
+    rating=Math.max(rating,12);
+  if(violence>=3 || fear>=3 || language>=2 || substances>=2 ||
+     themes>=2 || sexual>=2 || gambling>=2)
+    rating=Math.max(rating,16);
+  if((violence>=3 && fear>=3) || (violence>=3 && themes>=2) ||
+     (fear>=3 && themes>=2) || (language>=3 && (violence>=2 || fear>=2)) ||
+     (sexual>=2 && (violence>=2 || themes>=2)))
+    rating=18;
 
   const item=levels[rating];
   const img=document.getElementById("ratingLogo");
   const link=document.getElementById("downloadLogo");
-  const note=document.getElementById("missingLogo");
-  img.src=item.file;
+  const filename=item.file;
+  img.src=encodeURI(filename)+"?rating="+rating+"&v=3";
   img.alt="IGRS "+rating;
-  link.href=item.file;
-  link.download=item.file;
-  document.getElementById("resultText").textContent="IGRS "+rating+"+ — "+item.desc;
-  note.textContent="Если логотип не отображается, положи файл «"+item.file+"» в ту же папку, что и index.html.";
+  link.href=encodeURI(filename);
+  link.download=filename;
+  const game=document.getElementById("gameName").value.trim();
+  document.getElementById("resultText").textContent=
+    (game ? "Игра «"+game+"»: " : "")+"IGRS "+rating+"+ — "+item.desc;
+  document.getElementById("missingLogo").textContent=
+    "Для отображения логотипа файл «"+filename+"» должен находиться рядом с этим HTML-файлом.";
+  img.onerror=function(){
+    document.getElementById("missingLogo").textContent=
+      "Не найден файл «"+filename+"». Положи все пять PNG-логотипов рядом с HTML-файлом.";
+  };
   document.getElementById("result").classList.add("show");
   document.getElementById("result").scrollIntoView({behavior:"smooth",block:"start"});
 });
