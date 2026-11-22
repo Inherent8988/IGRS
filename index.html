@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>IGRS — Inherent Game Rating System</title>
+<style>
+:root{color-scheme:dark;--bg:#080808;--panel:#121212;--line:#292929;--muted:#a4a4a4;--white:#f5f5f5;--accent:#b7ff00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+header{padding:25px clamp(18px,5vw,64px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:30px;font-weight:900;letter-spacing:2px}
+.brand span{color:var(--accent)}
+.tag{color:var(--muted);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+main{width:min(850px,calc(100% - 32px));margin:42px auto 70px}
+.intro{margin-bottom:28px}
+h1{font-size:clamp(27px,5vw,42px);margin:0 0 10px}
+p{color:var(--muted);line-height:1.55}
+.notice{border:1px solid #49421d;background:#17150b;color:#e9d98d;padding:13px 15px;border-radius:10px;font-size:13px;line-height:1.5;margin:20px 0 25px}
+form,.result{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,30px)}
+.question{padding:17px 0;border-bottom:1px solid var(--line)}
+.question:last-of-type{border:0}
+label{display:block;font-weight:700;margin-bottom:10px}
+select,input{width:100%;background:#090909;color:var(--white);border:1px solid #3b3b3b;border-radius:9px;padding:13px;font-size:15px}
+select:focus,input:focus{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:12px;color:var(--muted);margin:8px 0 0}
+button{border:0;border-radius:10px;padding:14px 20px;font-weight:800;font-size:15px;cursor:pointer}
+.primary{width:100%;background:var(--accent);color:#080808;margin-top:22px}
+.primary:hover{filter:brightness(.93)}
+.result{margin-top:24px;text-align:center;display:none}
+.result.show{display:block}
+.result h2{margin:0 0 8px}
+.result img{display:block;width:min(320px,80%);max-height:430px;object-fit:contain;margin:22px auto;background:#fff;border-radius:3px}
+.download{display:inline-block;background:#f2f2f2;color:#111;text-decoration:none;padding:12px 18px;border-radius:9px;font-weight:800;margin:4px}
+.small{font-size:12px;color:var(--muted)}
+footer{text-align:center;color:#666;font-size:12px;padding:0 20px 30px}
+@media(min-width:700px){.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">IGRS<span>™</span></div>
+  <div class="tag">Inherent Game Rating System</div>
+</header>
+<main>
+  <section class="intro">
+    <h1>Оценка видеоигры</h1>
+    <p>Ответь на вопросы о содержании игры. Система предложит предварительную возрастную категорию IGRS.</p>
+  </section>
+  <div class="notice">Важно: IGRS — независимая концепция классификации. Результат анкеты является предварительной рекомендацией, а не официальным или государственным возрастным рейтингом.</div>
+  <form id="ratingForm">
+    <div class="grid">
+      <div class="question">
+        <label for="violence">1. Насколько часто встречается насилие?</label>
+        <select id="violence" required>
+          <option value="0">Не встречается</option>
+          <option value="1">Редкое, условное или мультяшное</option>
+          <option value="2">Умеренное или реалистичное</option>
+          <option value="3">Частое и интенсивное</option>
+        </select>
+      </div>
+      <div class="question">
+        <label for="fear">2. Насколько страшная атмосфера?</label>
+        <select id="fear" required>
+          <option value="0">Не страшная</option>
+          <option value="1">Немного пугающая</option>
+          <option value="2">Заметно пугающая / напряжённая</option>
+          <option value="3">Очень интенсивный хоррор</option>
+        </select>
+      </div>
+      <div class="question">
+        <label for="language">3. Какая ненормативная лексика?</label>
+        <select id="language" required>
+          <option value="0">Отсутствует</option>
+          <option value="1">Редкие мягкие выражения</option>
+          <option value="2">Регулярная грубая лексика</option>
+          <option value="3">Частая очень грубая лексика</option>
+        </select>
+      </div>
+      <div class="question">
+        <label for="substances">4. Есть ли темы алкоголя или наркотиков?</label>
+        <select id="substances" required>
+          <option value="0">Нет</option>
+          <option value="1">Только упоминания</option>
+          <option value="2">Заметное изображение или употребление</option>
+        </select>
+      </div>
+      <div class="question">
+        <label for="themes">5. Насколько серьёзные взрослые темы?</label>
+        <select id="themes" required>
+          <option value="0">Нет / минимальные</option>
+          <option value="1">Есть отдельные серьёзные темы</option>
+          <option value="2">Много тяжёлых психологических тем</option>
+        </select>
+      </div>
+      <div class="question">
+        <label for="online">6. Есть ли взаимодействие с другими игроками?</label>
+        <select id="online" required>
+          <option value="0">Нет, одиночная игра</option>
+          <option value="1">Да, онлайн-режим или чат</option>
+        </select>
+        <p class="hint">Онлайн-взаимодействие само по себе не повышает возрастную категорию, но требует отдельного внимания родителей.</p>
+      </div>
+    </div>
+    <button class="primary" type="submit">ОПРЕДЕЛИТЬ РЕЙТИНГ</button>
+  </form>
+
+  <section class="result" id="result" aria-live="polite">
+    <h2>Предварительный рейтинг IGRS</h2>
+    <p id="resultText"></p>
+    <img id="ratingLogo" src="" alt="Выбранный логотип IGRS">
+    <a class="download" id="downloadLogo" href="#" download>Скачать логотип</a>
+    <p class="small" id="missingLogo"></p>
+  </section>
+</main>
+<footer>IGRS™ · Inherent Game Rating System · Независимая предварительная классификация</footer>
+<script>
+const levels = {
+  3:  {file:"IGRS 3.png",  desc:"Подходит для самой широкой аудитории. В анкете не отмечено значимого контента."},
+  7:  {file:"IGRS 7.png",  desc:"Может содержать немного условного насилия или слегка пугающие моменты."},
+  12: {file:"IGRS 12.png", desc:"Может содержать умеренное насилие, заметно пугающие сцены или грубоватую лексику."},
+  16: {file:"IGRS 16.png", desc:"Может содержать частое интенсивное насилие, сильный хоррор или регулярную грубую лексику."},
+  18: {file:"IGRS 18.png", desc:"В анкете отмечено сочетание наиболее интенсивных или взрослых тем."}
+};
+
+document.getElementById("ratingForm").addEventListener("submit", function(event){
+  event.preventDefault();
+  const v = id => Number(document.getElementById(id).value);
+  const violence=v("violence"), fear=v("fear"), language=v("language");
+  const substances=v("substances"), themes=v("themes");
+  let rating=3;
+
+  // Transparent starter heuristic. It should be reviewed and refined before public use.
+  if (violence>=1 || fear>=1) rating=Math.max(rating,7);
+  if (violence>=2 || fear>=2 || language>=1 || substances>=1 || themes>=1) rating=Math.max(rating,12);
+  if (violence>=3 || fear>=3 || language>=2 || substances>=2 || themes>=2) rating=Math.max(rating,16);
+  if ((violence>=3 && fear>=3) || (violence>=3 && themes>=2) ||
+      (fear>=3 && themes>=2) || (language>=3 && (violence>=2 || fear>=2))) rating=18;
+
+  const item=levels[rating];
+  const img=document.getElementById("ratingLogo");
+  const link=document.getElementById("downloadLogo");
+  const note=document.getElementById("missingLogo");
+  img.src=item.file;
+  img.alt="IGRS "+rating;
+  link.href=item.file;
+  link.download=item.file;
+  document.getElementById("resultText").textContent="IGRS "+rating+"+ — "+item.desc;
+  note.textContent="Если логотип не отображается, положи файл «"+item.file+"» в ту же папку, что и index.html.";
+  document.getElementById("result").classList.add("show");
+  document.getElementById("result").scrollIntoView({behavior:"smooth",block:"start"});
+});
+</script>
+</body>
+</html>
