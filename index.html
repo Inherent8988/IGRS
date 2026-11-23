@@ -146,15 +146,28 @@ footer{text-align:center;color:#666;font-size:12px;padding:0 20px 30px}
         <select id="discrimination"><option value="0">Нет</option><option value="1">Редкие упоминания или сюжетный контекст</option><option value="2">Частое или одобряемое игрой изображение</option></select>
       </div>
       <div class="question">
-        <label for="scarySounds">14. Есть ли страшные звуки?</label>
+        <label for="blood">14. Есть ли кровь?</label>
+        <select id="blood"><option value="0">Нет</option><option value="1">Да, присутствует</option></select>
+      </div>
+      <div class="question">
+        <label for="killing">15. Можно ли убивать персонажей в игре?</label>
+        <select id="killing"><option value="0">Нет</option><option value="1">Да, это возможно</option></select>
+      </div>
+      <div class="question">
+        <label for="suicideScenes">16. Есть ли в игре сцены самоубийства?</label>
+        <select id="suicideScenes"><option value="0">Нет</option><option value="1">Да, присутствуют</option></select>
+        <p class="hint">Учитывается только наличие такой темы или сцены; подробности описывать не нужно.</p>
+      </div>
+      <div class="question">
+        <label for="scarySounds">17. Есть ли страшные звуки?</label>
         <select id="scarySounds"><option value="0">Нет</option><option value="1">Редкие или умеренно пугающие звуки</option><option value="2">Частые и очень пугающие звуки</option></select>
       </div>
       <div class="question">
-        <label for="screamers">15. Есть ли скримеры?</label>
+        <label for="screamers">18. Есть ли скримеры?</label>
         <select id="screamers"><option value="0">Нет</option><option value="1">Редкие / не очень резкие</option><option value="2">Частые или резкие скримеры</option></select>
       </div>
       <div class="question">
-        <label for="flashes">16. Есть ли мигающие вспышки?</label>
+        <label for="flashes">19. Есть ли мигающие вспышки?</label>
         <select id="flashes"><option value="0">Нет</option><option value="1">Редкие или слабые вспышки</option><option value="2">Частые, яркие или быстрые вспышки</option></select>
         <p class="hint">Это отдельное предупреждение о светочувствительности. Само по себе оно не повышает возрастную категорию.</p>
       </div>
@@ -189,6 +202,7 @@ document.getElementById("ratingForm").addEventListener("submit", function(event)
   const substances=v("substances"), themes=v("themes"), sexual=v("sexual");
   const gambling=v("gambling"), discrimination=v("discrimination");
   const scarySounds=v("scarySounds"), screamers=v("screamers"), flashes=v("flashes");
+  const blood=v("blood"), killing=v("killing"), suicideScenes=v("suicideScenes");
   let rating=3;
 
   if(violence>=1 || fear>=1 || discrimination>=1 || scarySounds>=1 || screamers>=1)
@@ -205,6 +219,15 @@ document.getElementById("ratingForm").addEventListener("submit", function(event)
      (sexual>=2 && (violence>=2 || themes>=2)))
     rating=18;
 
+  // Эти три фактора дают небольшой дополнительный вес:
+  // два или три отмеченных фактора вместе повышают категорию на одну ступень.
+  const additionalContentPoints = blood + killing + suicideScenes;
+  if (additionalContentPoints >= 2) {
+    const order = [3, 7, 12, 16, 18];
+    const index = order.indexOf(rating);
+    if (index >= 0 && index < order.length - 1) rating = order[index + 1];
+  }
+
   const item=levels[rating];
   const img=document.getElementById("ratingLogo");
   const link=document.getElementById("downloadLogo");
@@ -220,6 +243,9 @@ document.getElementById("ratingForm").addEventListener("submit", function(event)
   const selectedGenres=[...document.querySelectorAll('input[name="genre"]:checked')].map(x=>x.value);
   const notes=[];
   if(selectedGenres.length) notes.push("Жанры: "+selectedGenres.join(", "));
+  if(blood>0) notes.push("Есть кровь");
+  if(killing>0) notes.push("Можно убивать персонажей");
+  if(suicideScenes>0) notes.push("Есть сцены самоубийства");
   if(flashes>0) notes.push(flashes===1 ? "Есть мигающие вспышки" : "Есть частые/яркие мигающие вспышки — предупреждение о светочувствительности");
   if(scarySounds>0) notes.push("Есть страшные звуки");
   if(screamers>0) notes.push("Есть скримеры");
